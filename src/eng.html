@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Manipulating the DOM</title>
+  <!-- Load Google Fonts -->
+    <!-- From Udacity -->
+
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans:900|Merriweather&display=swap" rel="stylesheet">  <!-- Load Styles -->
+  <link href="engcss.css" rel="stylesheet">
+</head>
+<body>
+  <!-- HTML Follows BEM naming conventions 
+  IDs are only used for sections to connect menu achors to sections -->
+  <header class="page__header">
+    <nav id="navbar__menu">
+      <ul id="gone">
+        <li><button href id="sec1" class="first" >Section 1</button>
+        
+        </li>
+        <li><button href id="sec2" class="first" >Section 2</button> 
+        
+        </li>
+        <li><button href id="sec3" class="first" >Section 3</button>
+        </li>
+       
+      
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <header class="main__hero">
+      <h1>🎆Holi, Festival of Colors</h1>
+        <h2 style="margin: 15px;">This purpose of this website is to display information about one of my favorite traditions. Enjoy looking around!</h2>
+    </header>
+    <!-- Each Section has an ID (used for the anchor) and 
+    a data attribute that will populate the li node.
+    Adding more sections will automatically populate nav.
+    The first section is set to active class by default -->
+    <section id="section1" data-nav="Section 1" class="your-active-class">
+      <div class="landing__container">
+        <h3>My favorite Nepali holiday, Holi, produces magical effects! </h3>
+       <img class="image" style="border: 6px solid rgb(241, 207, 8);"  src="https://static.toiimg.com/thumb/msid-63144167,width-800,height-600,resizemode-75,imgsize-142657/63144167.jpg">
+      </div>
+    </section>
+    <section id="section2" data-nav="Section 2">
+        <div class="landing__container">
+          <h3>Origins of this celebration</h3>
+          <img class="image" style="border: 6px solid rgb(241, 207, 8);"  src="https://www.ancient-origins.net/sites/default/files/field/image/Holi-kele-nanda-lala.jpg">
+        </div>
+      </section>
+    <section id="section3" data-nav="Section 3">
+      <div class="landing__container">
+        <h3>This is War! (kinda)</h3>
+        <img class="image" style="border: 6px solid rgb(241, 207, 8);"  src="https://lh3.googleusercontent.com/proxy/bwFPtnNkHgli4w2ZMDwJWyXWPTTWGIbEggWZlmhe-lhHgAS5TUydLuYMv0IbcKAPlg5E6G0hCijyHlv5L6lDG-ncnqUP1Bvah4cyDRotoE8AYoAkfSS4CPDyY_CN0w">
+      </div>
+    </section>
+   
+    <section id="section4" data-nav="Section 4">
+      <div class="landing__container">
+        <h3><u>Research Question: </u>How does religion play a part in a person’s happiness? 
+        </h3>
+        <img class="image" style="border: 6px solid rgb(241, 207, 8);"  src="https://eternalreligion.org/wp-content/uploads/2019/06/1271_krishna-cow-wallpaper-02_copy-1024x746.jpg">
+     <a style="color:rgb(235, 235, 235);" href="https://www.washingtonpost.com/national/religion/religion-is-a-sure-route-to-true-happiness/2014/01/23/f6522120-8452-11e3-bbe5-6a2a3141e3a9_story.html">
+
+        <h4>🎆Science behind the joy of religion</h4></a>
+     
+        <a style="color:rgb(235, 235, 235);" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6182728/#CR19">
+            <h4>🎆Extensive research, with the addition of different faiths</h4></a>
+    </div>
+    </section>
+  
+  </main>
+
+
+  <h1>Draw On the Blank Canvas to Make Your Own Pattern!</h1>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+  
+  
+
+
+<script >
+
+/**
+ * 
+ * Manipulating the DOM exercise.
+ * Exercise programmatically builds navigation,
+ * scrolls to anchors from navigation,
+ * and highlights section in viewport upon scrolling.
+ * 
+ * Dependencies: None
+ * 
+ * JS Version: ES2015/ES6
+ * 
+ * JS Standard: ESlint
+ * 
+*/
+
+/**
+ * Define Global Variables
+ * 
+*/
+
+// Symmetry corresponding to the number of reflections. Change the number for different number of reflections 
+let symmetry = 6;   
+
+let angle = 360 / symmetry;
+let saveButton, clearButton, mouseButton, keyboardButton;
+let slider;
+
+function setup() { 
+  createCanvas(320, 320);
+  angleMode(DEGREES);
+  background(255);
+
+
+
+ 
+  // Setting up the slider for the thickness of the brush
+  brushSizeSlider = createButton('Brush Size Slider');
+  sizeSlider = createSlider(1, 32, 4, 0.1);
+}
+
+// Save File Function
+function saveFile() {
+  save('design.jpg');
+}
+
+// Clear Screen function
+function clearScreen() {
+  background(5);
+}
+
+
+
+function draw() {
+  translate(width / 2, height / 2);
+
+  if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
+    let mx = mouseX - width / 2;
+    let my = mouseY - height / 2;
+    let pmx = pmouseX - width / 2;
+    let pmy = pmouseY - height / 2;
+    
+    if (mouseIsPressed) {
+      for (let i = 0; i < symmetry; i++) {
+        rotate(angle);
+        let sw = sizeSlider.value();
+        strokeWeight(sw);
+        line(mx, my, pmx, pmy);
+        push();
+        scale(1, -1);
+        line(mx, my, pmx, pmy);
+        pop();
+      }
+    }
+  }
+}
+
+
+
+
+
+var para = document.createElement("ul");
+var element = document.getElementById("navbar__menu");
+element.appendChild(para);
+document.getElementsByTagName("ul")[1].setAttribute("id", "template");
+//make the <ul> element
+
+var para1 = document.createElement("li");
+var element1 = document.getElementById("template");
+element1.appendChild(para1);
+
+
+var para2 = document.createElement("li");
+var para3 = document.createElement("li");
+var para4 = document.createElement("li");
+
+
+element1.appendChild(para2);
+element1.appendChild(para3);
+element1.appendChild(para4);
+//make the 4 <li> elements for each section
+
+
+
+
+//making button section
+var button1 = document.createElement("button");
+var button2 = document.createElement("button");
+var button3 = document.createElement("button");
+var button4 = document.createElement("button");
+
+
+document.getElementsByTagName("li")[3].appendChild(button1);
+document.getElementsByTagName("li")[4].appendChild(button2);
+document.getElementsByTagName("li")[5].appendChild(button3);
+document.getElementsByTagName("li")[6].appendChild(button4);
+
+//setting the id and class for the 4 buttons
+document.getElementsByTagName("button")[3].setAttribute("id", "1sec1");
+document.getElementsByTagName("button")[4].setAttribute("id", "1sec2");
+document.getElementsByTagName("button")[5].setAttribute("id", "1sec3");
+document.getElementsByTagName("button")[6].setAttribute("id", "1sec4");
+
+document.getElementsByTagName("button")[3].classList.add("first");
+document.getElementsByTagName("button")[4].classList.add("first");
+document.getElementsByTagName("button")[5].classList.add("first");
+document.getElementsByTagName("button")[6].classList.add("first");
+//create text for the 4 buttons
+tnode1 = document.createTextNode("Section 1")
+tnode2 = document.createTextNode("Section 2")
+tnode3 = document.createTextNode("Section 3")
+tnode4 = document.createTextNode("Section 4")
+
+document.getElementsByTagName("button")[3].appendChild(tnode1)
+document.getElementsByTagName("button")[4].appendChild(tnode2)
+document.getElementsByTagName("button")[5].appendChild(tnode3)
+document.getElementsByTagName("button")[6].appendChild(tnode4)
+
+//making the website is finished but, I have encountered a 
+//problem in which this block of code above me doesn't work
+//without the unordered list 
+
+
+
+
+
+
+//adds the smooth scroll animation to each component in the navbar
+document.getElementById("1sec1").addEventListener("click", function(){
+  document.getElementById("section1").scrollIntoView({ behavior: 'smooth', block: 'center'});
+
+}) 
+
+document.getElementById("1sec2").addEventListener("click", function(){
+  
+  document.getElementById("section2").scrollIntoView({ behavior: 'smooth', block: "center"});
+
+}) 
+
+document.getElementById("1sec3").addEventListener("click", function(){
+  
+  document.getElementById("section3").scrollIntoView({ behavior: 'smooth', block: "center"});
+
+}) 
+
+document.getElementById("1sec4").addEventListener("click", function(){
+  
+  document.getElementById("section4").scrollIntoView({ behavior: 'smooth', block: "center"});
+
+}) 
+
+
+
+/**
+ * End Global Variables
+ * Start Helper Functions
+ * 
+*/
+//https://codepen.io/ivanmt07/pen/pxONrw helped a little
+window.addEventListener('scroll', function(ev) {
+//Gotten some help from Stack Overflow
+//for each nav bar - sec1
+
+
+
+
+//this funtion makes the corresponding in the navbar light up with purple
+//when the section is in the viewport
+   const secone = document.getElementById('section1');
+   const distanceToTopOne = secone.getBoundingClientRect().top;
+if(distanceToTopOne <= 200 && distanceToTopOne >= -178 ) {
+//add class active
+document.getElementById("1sec1")
+.classList.add("active");
+} else {
+//or remove class active
+
+  document.getElementById("1sec1")
+  .classList.remove("active");
+
+}
+
+
+
+const sectwo = document.getElementById('section2');
+const distanceToTopTwo = sectwo.getBoundingClientRect().top;
+if(distanceToTopTwo <= 300 && distanceToTopTwo >= -478 ) {
+
+document.getElementById("1sec2")
+.classList.add("active");
+} else {
+
+document.getElementById("1sec2")
+.classList.remove("active");
+
+}
+
+
+
+const secthr = document.getElementById('section3');
+const distanceToTopThr = secthr.getBoundingClientRect().top;
+if(distanceToTopThr <= 100 && distanceToTopThr >= -478 ) {
+
+document.getElementById("1sec3")
+.classList.add("active");
+} else {
+
+document.getElementById("1sec3")
+.classList.remove("active");
+
+}
+
+const secfou = document.getElementById('section4');
+const distanceToTopFou = secfou.getBoundingClientRect().top;
+if(distanceToTopFou <= 100 && distanceToTopFou >= -478 ) {
+
+document.getElementById("1sec4")
+.classList.add("active");
+} else {
+
+document.getElementById("1sec4")
+.classList.remove("active");
+
+}
+
+
+
+});
+
+/**
+ * End Helper Functions
+ * Begin Main Functions
+ * 
+*/
+
+
+// Scroll to anchor ID using scrollTO event
+
+/**
+ * End Main Functions
+ * Begin Events
+ * 
+*/
+
+// Build menu 
+
+// Scroll to section on link click
+
+// Set sections as active
+
+
+
+</script>
+
+  
+</body>
+</html>
